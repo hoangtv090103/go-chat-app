@@ -1,0 +1,42 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.login, .room-list, .chat-room {
+  width: 300px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul li {
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.messages {
+  height: 300px;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.input {
+  display: flex;
+}
+
+.input input {
+  flex: 1;
+  padding: 10px;
+}
+
+.typing {
+  color: gray;
+  font-size: 12px;
+  margin-top: 10px;
+}
