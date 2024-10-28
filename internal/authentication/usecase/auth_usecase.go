@@ -1,36 +1,41 @@
-package authusecase
+package authrepository
 
 import (
+	"context"
 	"errors"
 	authdomain "go-chat-app/internal/authentication/domain"
+	"go-chat-app/internal/authentication/interfaces"
 	"os"
 	"time"
 
-	"golang.org/x/crypto/bcrypt"
-
 	"github.com/dgrijalva/jwt-go"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthUsecase struct {
-	userRepo UserRepository
+	userRepo interfaces.IUserRepository
 }
 
-func NewAuthUseCase(userRepo UserRepository) *AuthUsecase {
+type IAuthUsecase interface {
+	Register(context context.Context, username, password string) error
+	Login(context context.Context, username, password string) (string, error)
+}
+
+func NewAuthUseCase(userRepo interfaces.IUserRepository) *AuthUsecase {
 	return &AuthUsecase{
 		userRepo: userRepo,
 	}
 }
 
-func (uc *AuthUsecase) Register(username, password string) error {
+func (uc *AuthUsecase) Register(context context.Context, username, password string) error {
 	// Check if the user already exists
-	_, err := uc.userRepo.FindByUsername(username)
+	_, err := uc.userRepo.FindByUsername(context, username)
 	if err == nil {
 		return errors.New("user already exists")
 	}
 
 	// Hash the pw
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-
 	if err != nil {
 		return err
 	}
@@ -42,32 +47,28 @@ func (uc *AuthUsecase) Register(username, password string) error {
 	}
 
 	// Store the user
-	return uc.userRepo.Store(user)
+	return uc.userRepo.Store(context, user)
 }
 
-func (uc *AuthUsecase) Login(username, password string) (string, error) {
+func (uc *AuthUsecase) Login(context context.Context, username, password string) (string, error) {
 	// Find the user by username
-	user, err := uc.userRepo.FindByUsername(username)
-
+	user, err := uc.userRepo.FindByUsername(context, username)
 	if err != nil {
 		return "", errors.New("user not exists")
 	}
 
 	// Compare the password and hashed password
-	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
-	if err != nil {
+	if !uc.userRepo.CheckPasswordHash(context, password, user.Password) {
 		return "", errors.New("incorrect password")
 	}
 
 	// Generate JWT Token
-	// Define custom claims
 	type CustomClaims struct {
 		Username string `json:"username"`
 		UserID   uint   `json:"user_id"`
 		jwt.StandardClaims
 	}
 
-	// Create claims with custom fields
 	claims := &CustomClaims{
 		Username: username,
 		UserID:   user.ID,
@@ -76,12 +77,9 @@ func (uc *AuthUsecase) Login(username, password string) (string, error) {
 		},
 	}
 
-	// TODO: What SigningMethodHS256 does?
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
 	jwtKey := []byte(os.Getenv("JWT_SECRET_KEY"))
 	tokenString, err := token.SignedString(jwtKey)
-
 	if err != nil {
 		return "", err
 	}

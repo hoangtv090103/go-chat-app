@@ -1,7 +1,9 @@
+//go:generate mockgen -source=chat_usecase.go -destination=./mocks/chat_store.go
+
 package chatusecase
 
 import (
-	userusecase "go-chat-app/internal/authentication/usecase"
+	authrepository "go-chat-app/internal/authentication/repository/postgres"
 	chatdomain "go-chat-app/internal/chat/domain"
 )
 
@@ -14,7 +16,7 @@ type ChatUseCase struct {
 	chatRepo ChatMessageRepository
 }
 
-func NewChatUseCase(chatRepo ChatMessageRepository, userRepo userusecase.UserRepository) *ChatUseCase {
+func NewChatUseCase(chatRepo ChatMessageRepository, userRepo authrepository.IUserRepository) *ChatUseCase {
 	return &ChatUseCase{
 		chatRepo: chatRepo,
 	}

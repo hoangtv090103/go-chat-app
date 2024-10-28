@@ -1,3 +1,5 @@
+//go:generate mockgen -source=room_usecase.go -destination=./mocks/room_store.go
+
 package chatusecase
 
 import (

@@ -18,7 +18,7 @@ func AuthHandler(app *fiber.App, authUsecase *authusecase.AuthUsecase) {
 			})
 		}
 
-		err := authUsecase.Register(data.Username, data.Password)
+		err := authUsecase.Register(c.Context(), data.Username, data.Password)
 
 		if err != nil {
 			return c.Status(fiber.StatusConflict).JSON(fiber.Map{
@@ -41,7 +41,7 @@ func AuthHandler(app *fiber.App, authUsecase *authusecase.AuthUsecase) {
 			})
 		}
 
-		token, err := authUsecase.Login(data.Username, data.Password)
+		token, err := authUsecase.Login(c.Context(), data.Username, data.Password)
 		if err != nil {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 				"error": err.Error(),
