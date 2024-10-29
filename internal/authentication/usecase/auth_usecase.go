@@ -3,8 +3,8 @@ package authrepository
 import (
 	"context"
 	"errors"
+	"go-chat-app/internal/authentication/authinterfaces"
 	authdomain "go-chat-app/internal/authentication/domain"
-	"go-chat-app/internal/authentication/interfaces"
 	"os"
 	"time"
 
@@ -13,7 +13,7 @@ import (
 )
 
 type AuthUsecase struct {
-	userRepo interfaces.IUserRepository
+	userRepo authinterfaces.IUserRepository
 }
 
 type IAuthUsecase interface {
@@ -21,7 +21,7 @@ type IAuthUsecase interface {
 	Login(context context.Context, username, password string) (string, error)
 }
 
-func NewAuthUseCase(userRepo interfaces.IUserRepository) *AuthUsecase {
+func NewAuthUseCase(userRepo authinterfaces.IUserRepository) *AuthUsecase {
 	return &AuthUsecase{
 		userRepo: userRepo,
 	}

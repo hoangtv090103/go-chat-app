@@ -8,11 +8,11 @@ function Login({ onLogin }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3001/login", {
+      const response = await axios.post("http://localhost:3000/login", {
         username,
         password,
       });
-      localStorage.setItem("token", response.data.token)
+      localStorage.setItem("token", response.data.token);
       onLogin(response.data.token);
     } catch (error) {
       alert("Invalid login");

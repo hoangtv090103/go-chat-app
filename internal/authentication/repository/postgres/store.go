@@ -1,8 +1,7 @@
-// internal/authentication/repository/postgres/store.go
 package authrepository
 
 import (
-	"go-chat-app/internal/authentication/interfaces"
+	"go-chat-app/internal/authentication/authinterfaces"
 	"gorm.io/gorm"
 )
 
@@ -10,7 +9,7 @@ type AuthPGRepository struct {
 	db *gorm.DB
 }
 
-func NewAuthPGRepository(db *gorm.DB) interfaces.IUserRepository {
+func NewAuthPGRepository(db *gorm.DB) authinterfaces.IUserRepository {
 	return &AuthPGRepository{
 		db: db,
 	}

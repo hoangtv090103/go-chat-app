@@ -10,60 +10,75 @@
 package mock_chatusecase
 
 import (
+	context "context"
 	chatdomain "go-chat-app/internal/chat/domain"
 	reflect "reflect"
 
 	gomock "go.uber.org/mock/gomock"
 )
 
-// MockChatMessageRepository is a mock of ChatMessageRepository interface.
-type MockChatMessageRepository struct {
+// MockIChatUseCase is a mock of IChatUseCase interface.
+type MockIChatUseCase struct {
 	ctrl     *gomock.Controller
-	recorder *MockChatMessageRepositoryMockRecorder
+	recorder *MockIChatUseCaseMockRecorder
 }
 
-// MockChatMessageRepositoryMockRecorder is the mock recorder for MockChatMessageRepository.
-type MockChatMessageRepositoryMockRecorder struct {
-	mock *MockChatMessageRepository
+// MockIChatUseCaseMockRecorder is the mock recorder for MockIChatUseCase.
+type MockIChatUseCaseMockRecorder struct {
+	mock *MockIChatUseCase
 }
 
-// NewMockChatMessageRepository creates a new mock instance.
-func NewMockChatMessageRepository(ctrl *gomock.Controller) *MockChatMessageRepository {
-	mock := &MockChatMessageRepository{ctrl: ctrl}
-	mock.recorder = &MockChatMessageRepositoryMockRecorder{mock}
+// NewMockIChatUseCase creates a new mock instance.
+func NewMockIChatUseCase(ctrl *gomock.Controller) *MockIChatUseCase {
+	mock := &MockIChatUseCase{ctrl: ctrl}
+	mock.recorder = &MockIChatUseCaseMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockChatMessageRepository) EXPECT() *MockChatMessageRepositoryMockRecorder {
+func (m *MockIChatUseCase) EXPECT() *MockIChatUseCaseMockRecorder {
 	return m.recorder
 }
 
 // GetMessagesByRoom mocks base method.
-func (m *MockChatMessageRepository) GetMessagesByRoom(roomID uint) ([]chatdomain.ChatMessage, error) {
+func (m *MockIChatUseCase) GetMessagesByRoom(context context.Context, roomID uint) ([]chatdomain.ChatMessage, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMessagesByRoom", roomID)
+	ret := m.ctrl.Call(m, "GetMessagesByRoom", context, roomID)
 	ret0, _ := ret[0].([]chatdomain.ChatMessage)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetMessagesByRoom indicates an expected call of GetMessagesByRoom.
-func (mr *MockChatMessageRepositoryMockRecorder) GetMessagesByRoom(roomID any) *gomock.Call {
+func (mr *MockIChatUseCaseMockRecorder) GetMessagesByRoom(context, roomID any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMessagesByRoom", reflect.TypeOf((*MockChatMessageRepository)(nil).GetMessagesByRoom), roomID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMessagesByRoom", reflect.TypeOf((*MockIChatUseCase)(nil).GetMessagesByRoom), context, roomID)
 }
 
-// Store mocks base method.
-func (m *MockChatMessageRepository) Store(message *chatdomain.ChatMessage) error {
+// SendMessage mocks base method.
+func (m *MockIChatUseCase) SendMessage(context context.Context, message *chatdomain.ChatMessage) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Store", message)
+	ret := m.ctrl.Call(m, "SendMessage", context, message)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// Store indicates an expected call of Store.
-func (mr *MockChatMessageRepositoryMockRecorder) Store(message any) *gomock.Call {
+// SendMessage indicates an expected call of SendMessage.
+func (mr *MockIChatUseCaseMockRecorder) SendMessage(context, message any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Store", reflect.TypeOf((*MockChatMessageRepository)(nil).Store), message)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendMessage", reflect.TypeOf((*MockIChatUseCase)(nil).SendMessage), context, message)
+}
+
+// SendPrivateMessage mocks base method.
+func (m *MockIChatUseCase) SendPrivateMessage(context context.Context, msg *chatdomain.ChatMessage) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SendPrivateMessage", context, msg)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// SendPrivateMessage indicates an expected call of SendPrivateMessage.
+func (mr *MockIChatUseCaseMockRecorder) SendPrivateMessage(context, msg any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendPrivateMessage", reflect.TypeOf((*MockIChatUseCase)(nil).SendPrivateMessage), context, msg)
 }

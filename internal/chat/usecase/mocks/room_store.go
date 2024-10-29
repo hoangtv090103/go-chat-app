@@ -10,75 +10,76 @@
 package mock_chatusecase
 
 import (
+	context "context"
 	chatdomain "go-chat-app/internal/chat/domain"
 	reflect "reflect"
 
 	gomock "go.uber.org/mock/gomock"
 )
 
-// MockRoomRepository is a mock of RoomRepository interface.
-type MockRoomRepository struct {
+// MockIRoomUseCase is a mock of IRoomUseCase interface.
+type MockIRoomUseCase struct {
 	ctrl     *gomock.Controller
-	recorder *MockRoomRepositoryMockRecorder
+	recorder *MockIRoomUseCaseMockRecorder
 }
 
-// MockRoomRepositoryMockRecorder is the mock recorder for MockRoomRepository.
-type MockRoomRepositoryMockRecorder struct {
-	mock *MockRoomRepository
+// MockIRoomUseCaseMockRecorder is the mock recorder for MockIRoomUseCase.
+type MockIRoomUseCaseMockRecorder struct {
+	mock *MockIRoomUseCase
 }
 
-// NewMockRoomRepository creates a new mock instance.
-func NewMockRoomRepository(ctrl *gomock.Controller) *MockRoomRepository {
-	mock := &MockRoomRepository{ctrl: ctrl}
-	mock.recorder = &MockRoomRepositoryMockRecorder{mock}
+// NewMockIRoomUseCase creates a new mock instance.
+func NewMockIRoomUseCase(ctrl *gomock.Controller) *MockIRoomUseCase {
+	mock := &MockIRoomUseCase{ctrl: ctrl}
+	mock.recorder = &MockIRoomUseCaseMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockRoomRepository) EXPECT() *MockRoomRepositoryMockRecorder {
+func (m *MockIRoomUseCase) EXPECT() *MockIRoomUseCaseMockRecorder {
 	return m.recorder
 }
 
-// FindByName mocks base method.
-func (m *MockRoomRepository) FindByName(name string) (*chatdomain.Room, error) {
+// CreateRoom mocks base method.
+func (m *MockIRoomUseCase) CreateRoom(context context.Context, roomName string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindByName", name)
-	ret0, _ := ret[0].(*chatdomain.Room)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret := m.ctrl.Call(m, "CreateRoom", context, roomName)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
-// FindByName indicates an expected call of FindByName.
-func (mr *MockRoomRepositoryMockRecorder) FindByName(name any) *gomock.Call {
+// CreateRoom indicates an expected call of CreateRoom.
+func (mr *MockIRoomUseCaseMockRecorder) CreateRoom(context, roomName any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByName", reflect.TypeOf((*MockRoomRepository)(nil).FindByName), name)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateRoom", reflect.TypeOf((*MockIRoomUseCase)(nil).CreateRoom), context, roomName)
 }
 
-// GetAll mocks base method.
-func (m *MockRoomRepository) GetAll() ([]chatdomain.Room, error) {
+// GetAllRooms mocks base method.
+func (m *MockIRoomUseCase) GetAllRooms(context context.Context) ([]chatdomain.Room, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAll")
+	ret := m.ctrl.Call(m, "GetAllRooms", context)
 	ret0, _ := ret[0].([]chatdomain.Room)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetAll indicates an expected call of GetAll.
-func (mr *MockRoomRepositoryMockRecorder) GetAll() *gomock.Call {
+// GetAllRooms indicates an expected call of GetAllRooms.
+func (mr *MockIRoomUseCaseMockRecorder) GetAllRooms(context any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockRoomRepository)(nil).GetAll))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAllRooms", reflect.TypeOf((*MockIRoomUseCase)(nil).GetAllRooms), context)
 }
 
-// Store mocks base method.
-func (m *MockRoomRepository) Store(room *chatdomain.RoomCreate) error {
+// GetRoomByName mocks base method.
+func (m *MockIRoomUseCase) GetRoomByName(context context.Context, roomName string) (*chatdomain.Room, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Store", room)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret := m.ctrl.Call(m, "GetRoomByName", context, roomName)
+	ret0, _ := ret[0].(*chatdomain.Room)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
-// Store indicates an expected call of Store.
-func (mr *MockRoomRepositoryMockRecorder) Store(room any) *gomock.Call {
+// GetRoomByName indicates an expected call of GetRoomByName.
+func (mr *MockIRoomUseCaseMockRecorder) GetRoomByName(context, roomName any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Store", reflect.TypeOf((*MockRoomRepository)(nil).Store), room)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRoomByName", reflect.TypeOf((*MockIRoomUseCase)(nil).GetRoomByName), context, roomName)
 }

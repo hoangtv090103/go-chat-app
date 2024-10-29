@@ -1,6 +1,7 @@
 package chathandler
 
 import (
+	"context"
 	"log"
 	"strconv"
 
@@ -62,7 +63,7 @@ func WebSocketHandler(app *fiber.App, chatUseCase *chatusecase.ChatUseCase) {
 
 // Function to send message history
 func sendMessageHistory(conn *websocket.Conn, chatUseCase *chatusecase.ChatUseCase, roomID uint) {
-	messages, err := chatUseCase.GetMessagesByRoom(roomID)
+	messages, err := chatUseCase.GetMessagesByRoom(context.Background(), roomID) // Pass context
 	if err != nil {
 		log.Println("Error fetching message history: ", err)
 		return
@@ -109,7 +110,7 @@ func handleMessages(conn *websocket.Conn, chatUseCase *chatusecase.ChatUseCase, 
 		}
 
 		// Optionally, store the message in the database
-		err = chatUseCase.SendMessage(&msg)
+		err = chatUseCase.SendMessage(context.Background(), &msg)
 
 		if err != nil {
 			log.Println("Error storing message: ", err)

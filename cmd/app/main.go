@@ -15,10 +15,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
-const port = ":3001"
+const port = ":3000"
 
 func main() {
-	err := godotenv.Load("../../.env")
+	err := godotenv.Load(".env")
 
 	if err != nil {
 		log.Fatal("Cannot load environment variable", err)

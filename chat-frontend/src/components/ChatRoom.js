@@ -11,7 +11,7 @@ function ChatRoom({ token, roomID }) {
     }
 
     const socket = new WebSocket(
-      `ws://localhost:3001/ws?token=${token}&room-id=${roomID}`
+      `ws://localhost:3000/ws?token=${token}&room-id=${roomID}`
     );
 
     socketRef.current = socket;
@@ -69,8 +69,11 @@ function ChatRoom({ token, roomID }) {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Type a message"
+        required
       />
-      <button onClick={sendMessage}>Send</button>
+      <button onClick={sendMessage} disabled={input === ""}>
+        Send
+      </button>
     </div>
   );
 }

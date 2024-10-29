@@ -9,7 +9,7 @@ function RoomList({ onSelectRoom }) {
     // Fetch available rooms
     async function fetchRooms() {
       try {
-        const response = await axios.get("http://localhost:3001/rooms");
+        const response = await axios.get("http://localhost:3000/rooms");
 
         // Check the structure of the data
         console.log("Rooms data received:", response.data);
@@ -32,7 +32,7 @@ function RoomList({ onSelectRoom }) {
     }
 
     try {
-      const response = await axios.post("http://localhost:3001/rooms", {
+      const response = await axios.post("http://localhost:3000/rooms", {
         name: newRoomName,
       });
       const createdRoom = response.data;

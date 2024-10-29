@@ -3,34 +3,36 @@
 package chatusecase
 
 import (
-	authrepository "go-chat-app/internal/authentication/repository/postgres"
+	"context"
+	"go-chat-app/internal/authentication/authinterfaces"
 	chatdomain "go-chat-app/internal/chat/domain"
+	chatinterfaces "go-chat-app/internal/chat/interfaces"
 )
 
-type ChatMessageRepository interface {
-	Store(message *chatdomain.ChatMessage) error
-	GetMessagesByRoom(roomID uint) ([]chatdomain.ChatMessage, error)
+type IChatUseCase interface {
+	SendMessage(context context.Context, message *chatdomain.ChatMessage) error
+	GetMessagesByRoom(context context.Context, roomID uint) ([]chatdomain.ChatMessage, error)
+	SendPrivateMessage(context context.Context, msg *chatdomain.ChatMessage) error
 }
-
 type ChatUseCase struct {
-	chatRepo ChatMessageRepository
+	chatRepo chatinterfaces.ChatMessageRepository
 }
 
-func NewChatUseCase(chatRepo ChatMessageRepository, userRepo authrepository.IUserRepository) *ChatUseCase {
+func NewChatUseCase(chatRepo chatinterfaces.ChatMessageRepository, userRepo authinterfaces.IUserRepository) *ChatUseCase {
 	return &ChatUseCase{
 		chatRepo: chatRepo,
 	}
 }
 
-func (uc *ChatUseCase) SendMessage(message *chatdomain.ChatMessage) error {
-	return uc.chatRepo.Store(message)
+func (uc *ChatUseCase) SendMessage(context context.Context, message *chatdomain.ChatMessage) error {
+	return uc.chatRepo.Store(context, message)
 }
 
-func (uc *ChatUseCase) GetMessagesByRoom(roomID uint) ([]chatdomain.ChatMessage, error) {
-	return uc.chatRepo.GetMessagesByRoom(roomID)
+func (uc *ChatUseCase) GetMessagesByRoom(context context.Context, roomID uint) ([]chatdomain.ChatMessage, error) {
+	return uc.chatRepo.GetMessagesByRoom(context, roomID)
 }
 
-func (uc *ChatUseCase) SendPrivateMessage(msg *chatdomain.ChatMessage) error {
+func (uc *ChatUseCase) SendPrivateMessage(context context.Context, msg *chatdomain.ChatMessage) error {
 	// Store the private message in the database
-	return uc.chatRepo.Store(msg)
+	return uc.chatRepo.Store(context, msg)
 }
